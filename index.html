@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ぱやのページ</title>
+  <meta charset="UTF-8">
+  <title>5分タイマー</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #f9f9f9, #e0e0ff);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 1rem;
-    }
-    .card {
-      background: white;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      text-align: center;
-    }
-    h1 {
-      margin-bottom: 0.5rem;
-    }
-    p {
-      line-height: 1.6;
-    }
-    .button {
-      margin-top: 1rem;
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      background-color: #6c63ff;
-      color: white;
-      border: none;
-      border-radius: 0.5rem;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-    .button:hover {
-      background-color: #574fd6;
-    }
+    body { font-family: sans-serif; text-align: center; margin-top: 80px; }
+    h1 { font-size: 2.5em; }
+    #time { font-size: 4em; margin: 20px 0; color: #2196f3; }
+    button { font-size: 1.2em; margin: 10px; padding: 10px 20px; border-radius: 8px; border: none; background-color: #4caf50; color: white; cursor: pointer; }
+    button:hover { background-color: #45a049; }
+    #stopBtn { background-color: #f44336; }
+    #stopBtn:hover { background-color: #d32f2f; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>ぱやのページへようこそ✨</h1>
-    <p>マーケDX推進中のぱやです！<br />
-    Git・GitHub、Pythonも学び中💻<br />
-    ゆるく、でも確実に前に進んでくスタイル🏃‍♀️💨</p>
-    <a href="https://github.com/your-username" class="button" target="_blank">GitHubを見る</a>
-  </div>
+  <h1>タイマー</h1>
+  <div id="time">00:00</div>
+  <button id="add5">+5分</button>
+  <button id="startBtn">開始</button>
+  <button id="stopBtn">終了</button>
+
+  <script>
+    let totalSeconds = 0;
+    let interval = null;
+
+    const timeDisplay = document.getElementById("time");
+    const updateDisplay = () => {
+      const min = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const sec = String(totalSeconds % 60).padStart(2, '0');
+      timeDisplay.textContent = `${min}:${sec}`;
+    };
+
+    document.getElementById("add5").onclick = () => {
+      totalSeconds += 5 * 60;
+      updateDisplay();
+    };
+
+    document.getElementById("startBtn").onclick = () => {
+      if (interval || totalSeconds <= 0) return;
+      interval = setInterval(() => {
+        totalSeconds--;
+        updateDisplay();
+        if (totalSeconds <= 0) {
+          clearInterval(interval);
+          interval = null;
+          alert("時間だよ〜！⏰");
+        }
+      }, 1000);
+    };
+
+    document.getElementById("stopBtn").onclick = () => {
+      clearInterval(interval);
+      interval = null;
+    };
+
+    updateDisplay();
+  </script>
 </body>
 </html>
